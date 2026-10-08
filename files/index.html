@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,800&family=Space+Mono:wght@400;700&family=Caveat:wght@700&display=swap">
+    <title>Portfolio - Đào Gia Kiệt - GenZ Creative</title>
+    <style>
+
+
+
+        :root {
+            --ink: #14121F;
+            --paper: #FFF9F0;
+            --pink: #FF3D8B;
+            --cyan: #00C2D1;
+            --lime: #D7FF3A;
+            --violet: #7B5CFF;
+            --orange: #FF8A3D;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--paper);
+            background-image: radial-gradient(rgba(20,18,31,0.09) 1.2px, transparent 1.2px);
+            background-size: 22px 22px;
+            color: var(--ink);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Scroll progress */
+        #progress {
+            position: fixed; top: 0; left: 0; height: 5px; width: 0;
+            background: linear-gradient(90deg, var(--pink), var(--orange), var(--lime), var(--cyan), var(--violet));
+            z-index: 200;
+        }
+
+        /* Cursor follower */
+        #cursor-blob {
+            position: fixed; top: 0; left: 0;
+            width: 34px; height: 34px; border-radius: 50%;
+            border: 2px solid var(--ink);
+            pointer-events: none; z-index: 300;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s, background .25s;
+            mix-blend-mode: multiply;
+        }
+        #cursor-blob.hovering { width: 64px; height: 64px; background: rgba(215,255,58,0.6); }
+        @media (hover: none) { #cursor-blob { display: none; } }
+
+        /* Ambient Pastel Blobs */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.45;
+            z-index: -1;
+            animation: moveBlobs 18s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .blob-1 { top: -10%; left: -10%; width: 45vw; height: 45vw; background: #FFB3D1; }
+        .blob-2 { bottom: -20%; right: -10%; width: 55vw; height: 55vw; background: #C9BCFF; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 30%; width: 35vw; height: 35vw; background: #A8F0F5; animation-delay: -10s; }
+
+        @keyframes moveBlobs {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(12%, 8%) scale(1.25) rotate(40deg); }
+        }
+
+        /* Floating decorations */
+        .deco {
+            position: absolute;
+            font-weight: 800;
+            pointer-events: none;
+            animation: floaty 6s ease-in-out infinite;
+            z-index: 1;
+        }
+        .deco-spin { animation: spin 12s linear infinite; }
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0) rotate(-6deg); }
+            50% { transform: translateY(-18px) rotate(6deg); }
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .scribble {
+            font-family: 'Caveat', cursive;
+            color: var(--pink);
+        }
+
+        /* Hero name letters */
+        .name-letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(60px) rotate(8deg);
+            animation: letterIn .8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .name-letter:hover { animation: jelly .6s; color: var(--pink); }
+        @keyframes letterIn { to { opacity: 1; transform: translateY(0) rotate(0); } }
+        @keyframes jelly {
+            0% { transform: scale(1,1); }
+            30% { transform: scale(1.25,.75); }
+            50% { transform: scale(.8,1.2); }
+            70% { transform: scale(1.1,.9); }
+            100% { transform: scale(1,1); }
+        }
+        .name-outline {
+            -webkit-text-stroke: 2px var(--ink);
+            color: transparent;
+        }
+
+        /* Marquee */
+        .marquee-container {
+            width: 110vw;
+            margin-left: -5vw;
+            overflow: hidden;
+            background: var(--lime);
+            color: var(--ink);
+            padding: 12px 0;
+            border-top: 3px solid var(--ink);
+            border-bottom: 3px solid var(--ink);
+            transform: rotate(-2deg);
+            position: relative;
+            z-index: 10;
+        }
+        .marquee-container.alt {
+            background: var(--pink);
+            color: #fff;
+            transform: rotate(1.5deg);
+            margin-top: -14px;
+            z-index: 9;
+        }
+        .marquee-content {
+            display: flex;
+            width: max-content;
+            animation: marquee 18s linear infinite;
+        }
+        .marquee-container.alt .marquee-content { animation-direction: reverse; animation-duration: 22s; }
+        .marquee-content span {
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            padding: 0 20px;
+            white-space: nowrap;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Profile Camera Viewfinder */
+        .camera-viewfinder {
+            position: relative;
+            width: 260px;
+            height: 320px;
+            margin: 0 auto 2rem auto;
+            border: 3px solid var(--ink);
+            background: #fff;
+            padding: 8px;
+            border-radius: 18px;
+            box-shadow: 12px 12px 0px var(--pink);
+            transform: rotate(-3deg);
+            transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            animation: heroPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        @keyframes heroPop {
+            from { opacity: 0; transform: scale(.6) rotate(-15deg); }
+            to { opacity: 1; transform: scale(1) rotate(-3deg); }
+        }
+        .camera-viewfinder:hover {
+            transform: rotate(2deg) scale(1.05);
+            box-shadow: 16px 16px 0px var(--cyan);
+        }
+        .camera-viewfinder img { border-radius: 10px; }
+
+        .cam-overlay {
+            position: absolute;
+            inset: 14px;
+            pointer-events: none;
+            z-index: 20;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 8px;
+        }
+        .cam-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: #fff;
+            border-style: solid;
+            z-index: 25;
+        }
+        .cam-tl { top: 16px; left: 16px; border-width: 3px 0 0 3px; }
+        .cam-tr { top: 16px; right: 16px; border-width: 3px 3px 0 0; }
+        .cam-bl { bottom: 16px; left: 16px; border-width: 0 0 3px 3px; }
+        .cam-br { bottom: 16px; right: 16px; border-width: 0 3px 3px 0; }
+
+        .cam-text {
+            font-family: 'Space Mono', monospace;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+        }
+
+        /* Pop Cards (neo-brutalist, bright) */
+        .glass-card {
+            --shadow: var(--ink);
+            background: #ffffff;
+            border: 2.5px solid var(--ink);
+            border-radius: 24px;
+            box-shadow: 6px 6px 0 var(--shadow);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s;
+            transform-style: preserve-3d;
+        }
+        .glass-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 var(--shadow);
+        }
+        .shadow-pink { --shadow: var(--pink); }
+        .shadow-cyan { --shadow: var(--cyan); }
+        .shadow-lime { --shadow: #B8E000; }
+        .shadow-violet { --shadow: var(--violet); }
+        .shadow-orange { --shadow: var(--orange); }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px) scale(.97);
+            transition: opacity .8s ease, transform .8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .35s;
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal.visible.glass-card:hover { transform: translate(-4px, -4px); }
+
+        /* Section titles */
+        .section-title {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            background: var(--ink);
+            color: #fff;
+            padding: .4rem 1.2rem;
+            border-radius: 14px;
+            transform: rotate(-1.5deg);
+            box-shadow: 5px 5px 0 var(--lime);
+        }
+        .section-title .emoji { display: inline-block; animation: wiggle 2.4s ease-in-out infinite; }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-14deg) scale(1.15); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* Chips */
+        .chip {
+            display: inline-block;
+            background: #fff;
+            border: 2px solid var(--ink);
+            padding: 3px 12px;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 600;
+            transition: transform .25s cubic-bezier(0.34, 1.56, 0.64, 1), background .25s, box-shadow .25s;
+        }
+        .chip:hover { transform: translateY(-3px) rotate(-3deg); background: var(--lime); box-shadow: 3px 3px 0 var(--ink); }
+        .chip-pink { background: var(--pink); color: #fff; }
+        .chip-cyan { background: var(--cyan); color: #fff; }
+        .chip-lime { background: var(--lime); }
+
+        /* Creative Tags / Stickers */
+        .sticker {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink);
+            border: 2px solid var(--ink);
+            box-shadow: 3px 3px 0 var(--ink);
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .sticker:hover { transform: scale(1.1) rotate(4deg); }
+        .sticker-yellow { background: var(--lime); transform: rotate(-3deg); }
+        .sticker-pink { background: var(--pink); color: white; transform: rotate(2deg); }
+        .sticker-cyan { background: var(--cyan); color: #fff; transform: rotate(-1deg); }
+
+        /* Contact pills */
+        .pill {
+            background: #fff;
+            border: 2px solid var(--ink);
+            padding: .5rem 1rem;
+            border-radius: 999px;
+            box-shadow: 3px 3px 0 var(--ink);
+            transition: transform .25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .25s, background .25s;
+        }
+        .pill:hover { transform: translate(-2px,-2px) rotate(-2deg); box-shadow: 5px 5px 0 var(--ink); background: var(--lime); }
+
+        /* 3D Folder Icon */
+        .folder-wrapper {
+            position: relative;
+            width: 70px;
+            height: 50px;
+            perspective: 500px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: bob 3s ease-in-out infinite;
+        }
+        @keyframes bob {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 0 -5px; }
+        }
+        .folder-back {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            border-radius: 6px 6px 0 0;
+            border: 2px solid var(--ink);
+        }
+        .folder-back::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -2px;
+            width: 30px;
+            height: 12px;
+            border-radius: 6px 6px 0 0;
+            border: 2px solid var(--ink);
+            border-bottom: none;
+        }
+        .folder-paper {
+            position: absolute;
+            bottom: 5px;
+            left: 10%;
+            width: 80%;
+            height: 35px;
+            background: #fff;
+            border: 2px solid var(--ink);
+            border-radius: 4px;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .folder-front {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 38px;
+            border-radius: 6px 6px 4px 4px;
+            border: 2px solid var(--ink);
+            transform-origin: bottom;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .f-pink .folder-back, .f-pink .folder-back::before { background: #E0287A; }
+        .f-pink .folder-front { background: var(--pink); }
+        .f-cyan .folder-back, .f-cyan .folder-back::before { background: #0097A7; }
+        .f-cyan .folder-front { background: var(--cyan); }
+        .f-yellow .folder-back, .f-yellow .folder-back::before { background: #A8CC00; }
+        .f-yellow .folder-front { background: var(--lime); }
+        .f-orange .folder-back, .f-orange .folder-back::before { background: #E06A1F; }
+        .f-orange .folder-front { background: var(--orange); }
+        .f-violet .folder-back, .f-violet .folder-back::before { background: #5A3FD9; }
+        .f-violet .folder-front { background: var(--violet); }
+
+        .folder-action:hover .folder-wrapper { transform: translateY(-6px) scale(1.08); }
+        .folder-action:hover .folder-front { transform: rotateX(-35deg); }
+        .folder-action:hover .folder-paper { transform: translateY(-18px) rotate(-4deg); }
+
+        /* "Mở xem sản phẩm" CTA */
+        .cta-view {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-weight: 800;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            text-align: center;
+            padding: .55rem .9rem;
+            border-radius: 12px;
+            border: 2px solid var(--ink);
+            background: #fff;
+            color: var(--ink);
+            box-shadow: 3px 3px 0 var(--ink);
+            overflow: hidden;
+            transition: transform .25s, box-shadow .25s, color .25s;
+            z-index: 0;
+        }
+        .cta-view::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--cta, var(--pink));
+            transform: translateX(-101%);
+            transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+        .cta-view .arrow { display: inline-block; transition: transform .3s; }
+        .folder-action:hover .cta-view { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); color: #fff; }
+        .folder-action:hover .cta-view::before { transform: translateX(0); }
+        .folder-action:hover .cta-view .arrow { transform: translateX(4px) rotate(-45deg); }
+        .folder-action:hover .cta-view.cta-dark-text { color: var(--ink); }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 249, 240, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: #fff;
+            border: 3px solid var(--ink);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.7) rotate(-6deg) translateY(40px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 10px 10px 0 var(--pink);
+        }
+        .modal-content.modal-lg {
+            max-width: 860px;
+            max-height: 90vh;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) rotate(0) translateY(0);
+        }
+        .modal-head {
+            background: var(--lime);
+            border-bottom: 3px solid var(--ink);
+            border-radius: 20px 20px 0 0;
+        }
+        .modal-overlay.active .modal-icon { animation: jelly .8s .2s; }
+        .modal-icon { display: inline-block; }
+
+
+        /* STSD modal content */
+        .modal-body { overflow-y: auto; padding: 24px; }
+        .stsd-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+        .stsd-stat { border: 3px solid var(--ink); border-radius: 16px; padding: 12px; text-align: center; background: var(--paper); box-shadow: 4px 4px 0 var(--ink); }
+        .stsd-stat b { display: block; font-size: 1.6rem; font-weight: 900; line-height: 1.1; }
+        .stsd-stat span { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; opacity: .7; }
+        .stsd-sub { font-weight: 900; text-transform: uppercase; letter-spacing: .08em; font-size: .9rem; margin: 0 0 12px; }
+        .stsd-links { display: grid; gap: 12px; margin-bottom: 28px; }
+        .stsd-link { display: flex; align-items: center; gap: 14px; border: 3px solid var(--ink); border-radius: 16px; padding: 14px 16px; background: #fff; box-shadow: 4px 4px 0 var(--c, var(--pink)); transition: transform .2s, box-shadow .2s; text-decoration: none; color: var(--ink); }
+        .stsd-link:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--c, var(--pink)); }
+        .stsd-link .ico { font-size: 1.8rem; flex-shrink: 0; }
+        .stsd-link .t { font-weight: 900; line-height: 1.3; }
+        .stsd-link .d { font-size: .85rem; opacity: .7; margin-top: 2px; }
+        .stsd-link .go { margin-left: auto; font-weight: 900; font-size: 1.3rem; }
+        .stsd-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+        .stsd-photo { position: relative; aspect-ratio: 4/3; border: 3px solid var(--ink); border-radius: 14px; overflow: hidden; background: repeating-linear-gradient(45deg, #fff 0 10px, var(--paper) 10px 20px); cursor: zoom-in; padding: 0; transition: transform .2s; }
+        .stsd-photo:hover { transform: rotate(-1.5deg) scale(1.03); }
+        .stsd-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .stsd-photo.missing { cursor: default; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; opacity: .55; text-align: center; padding: 8px; }
+        .stsd-photo.wide { grid-column: 1 / -1; aspect-ratio: 1.414 / 1; }
+        .stsd-photo.tall { aspect-ratio: 3 / 4; }
+        .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(20,18,31,.9); display: none; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 100%; max-height: 100%; border: 3px solid #fff; border-radius: 12px; }
+        @media (max-width: 520px) { .stsd-stats { grid-template-columns: 1fr; } }
+
+
+        .video-frame { position: relative; aspect-ratio: 16/9; border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; background: var(--ink); box-shadow: 6px 6px 0 var(--c, var(--cyan)); }
+        .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px; }
+
+
+        .facade { position: absolute; inset: 0; z-index: 2; width: 100%; border: 0; padding: 0; cursor: pointer; background: linear-gradient(135deg, var(--ink), #2b2650); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; font: inherit; }
+        .facade-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: opacity .2s; }
+        .facade:hover .facade-bg { opacity: .8; }
+        .facade-play { position: relative; width: 68px; height: 68px; border-radius: 50%; background: var(--c, var(--lime)); color: var(--ink); border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; padding-left: 4px; box-shadow: 4px 4px 0 var(--ink); transition: transform .2s; }
+        .facade:hover .facade-play { transform: scale(1.1); }
+        .facade-label { position: relative; font-weight: 800; font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; text-shadow: 0 2px 6px rgba(0,0,0,.7); }
+        .facade-spin { display: none; position: relative; width: 44px; height: 44px; border: 4px solid rgba(255,255,255,.3); border-top-color: var(--lime); border-radius: 50%; animation: facadeSpin .8s linear infinite; }
+        @keyframes facadeSpin { to { transform: rotate(360deg); } }
+        .facade.loading { cursor: progress; }
+        .facade.loading .facade-play, .facade.loading .facade-label { display: none; }
+        .facade.loading .facade-spin { display: block; }
+        .facade.loading::after { content: 'Đang tải…'; position: relative; font-weight: 700; font-size: .8rem; }
+        .facade.done { display: none; }
+        .video-frame iframe { z-index: 1; }
+
+        /* List Styling */
+        .cv-list { list-style: none; padding: 0; }
+        .cv-list li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 12px;
+            color: rgba(20, 18, 31, 0.82);
+            line-height: 1.6;
+        }
+        .cv-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--pink);
+            font-size: 15px;
+            top: 1px;
+            display: inline-block;
+            transition: transform .4s;
+        }
+        .cv-list li:hover::before { transform: rotate(180deg) scale(1.3); color: var(--violet); }
+
+        .tag {
+            padding: .25rem .75rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            border: 2px solid var(--ink);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+            .reveal, .name-letter { opacity: 1 !important; transform: none !important; }
+        }
+    </style>
+    <!-- Tailwind đã build sẵn (không dùng CDN cho nhanh). Thêm class Tailwind mới thì cần build lại. -->
+    <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.visible{visibility:visible}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.-bottom-10{bottom:-2.5rem}.-bottom-4{bottom:-1rem}.-left-10{left:-2.5rem}.-left-16{left:-4rem}.-right-10{right:-2.5rem}.-right-20{right:-5rem}.-right-6{right:-1.5rem}.-right-8{right:-2rem}.-top-10{top:-2.5rem}.-top-20{top:-5rem}.-top-6{top:-1.5rem}.-top-9{top:-2.25rem}.bottom-40{bottom:10rem}.bottom-5{bottom:1.25rem}.bottom-56{bottom:14rem}.left-5{left:1.25rem}.left-6{left:1.5rem}.left-\[14\%\]{left:14%}.left-\[8\%\]{left:8%}.right-5{right:1.25rem}.right-6{right:1.5rem}.right-\[10\%\]{right:10%}.right-\[22\%\]{right:22%}.right-\[6\%\]{right:6%}.top-16{top:4rem}.top-24{top:6rem}.top-5{top:1.25rem}.top-56{top:14rem}.z-10{z-index:10}.z-30{z-index:30}.z-40{z-index:40}.mx-auto{margin-left:auto;margin-right:auto}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mt-20{margin-top:5rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-24{height:6rem}.h-3{height:.75rem}.h-32{height:8rem}.h-40{height:10rem}.h-6{height:1.5rem}.h-64{height:16rem}.h-full{height:100%}.w-24{width:6rem}.w-3{width:.75rem}.w-32{width:8rem}.w-40{width:10rem}.w-6{width:1.5rem}.w-64{width:16rem}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-6xl{max-width:72rem}.flex-1{flex:1 1 0%}.flex-shrink{flex-shrink:1}.flex-shrink-0{flex-shrink:0}.rotate-\[-14deg\]{--tw-rotate:-14deg}.rotate-\[-14deg\],.rotate-\[12deg\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.rotate-\[12deg\]{--tw-rotate:12deg}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-8{gap:2rem}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.space-y-8>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.border{border-width:1px}.border-2{border-width:2px}.border-t-2{border-top-width:2px}.border-dashed{border-style:dashed}.border-\[\#14121F\]\/20{border-color:rgba(20,18,31,.2)}.border-black{--tw-border-opacity:1;border-color:rgb(0 0 0/var(--tw-border-opacity,1))}.\!bg-\[\#FF3D8B\]{--tw-bg-opacity:1!important;background-color:rgb(255 61 139/var(--tw-bg-opacity,1))!important}.bg-\[\#00C2D1\]{--tw-bg-opacity:1;background-color:rgb(0 194 209/var(--tw-bg-opacity,1))}.bg-\[\#7B5CFF\]{--tw-bg-opacity:1;background-color:rgb(123 92 255/var(--tw-bg-opacity,1))}.bg-\[\#D4F7FA\]{--tw-bg-opacity:1;background-color:rgb(212 247 250/var(--tw-bg-opacity,1))}.bg-\[\#D7FF3A\]{--tw-bg-opacity:1;background-color:rgb(215 255 58/var(--tw-bg-opacity,1))}.bg-\[\#E6E0FF\]{--tw-bg-opacity:1;background-color:rgb(230 224 255/var(--tw-bg-opacity,1))}.bg-\[\#FF3D8B\]{--tw-bg-opacity:1;background-color:rgb(255 61 139/var(--tw-bg-opacity,1))}.bg-\[\#FF8A3D\]{--tw-bg-opacity:1;background-color:rgb(255 138 61/var(--tw-bg-opacity,1))}.bg-\[\#FFE3CF\]{--tw-bg-opacity:1;background-color:rgb(255 227 207/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.object-cover{-o-object-fit:cover;object-fit:cover}.p-10{padding:2.5rem}.p-2{padding:.5rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.pb-12{padding-bottom:3rem}.pb-24{padding-bottom:6rem}.pt-20{padding-top:5rem}.pt-4{padding-top:1rem}.pt-8{padding-top:2rem}.text-center{text-align:center}.align-middle{vertical-align:middle}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-6xl{font-size:3.75rem;line-height:1}.text-7xl{font-size:4.5rem;line-height:1}.text-\[10px\]{font-size:10px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tighter{letter-spacing:-.05em}.tracking-wide{letter-spacing:.025em}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}.text-\[\#00C2D1\]{--tw-text-opacity:1;color:rgb(0 194 209/var(--tw-text-opacity,1))}.text-\[\#14121F\]\/60{color:rgba(20,18,31,.6)}.text-\[\#14121F\]\/70{color:rgba(20,18,31,.7)}.text-\[\#14121F\]\/75{color:rgba(20,18,31,.75)}.text-\[\#14121F\]\/80{color:rgba(20,18,31,.8)}.text-\[\#7B5CFF\]{--tw-text-opacity:1;color:rgb(123 92 255/var(--tw-text-opacity,1))}.text-\[\#A8CC00\]{--tw-text-opacity:1;color:rgb(168 204 0/var(--tw-text-opacity,1))}.text-\[\#D7FF3A\]{--tw-text-opacity:1;color:rgb(215 255 58/var(--tw-text-opacity,1))}.text-\[\#FF3D8B\]{--tw-text-opacity:1;color:rgb(255 61 139/var(--tw-text-opacity,1))}.text-\[\#FF8A3D\]{--tw-text-opacity:1;color:rgb(255 138 61/var(--tw-text-opacity,1))}.text-black{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-10{opacity:.1}.opacity-15{opacity:.15}.opacity-20{opacity:.2}.opacity-40{opacity:.4}.opacity-50{opacity:.5}.opacity-60{opacity:.6}.opacity-80{opacity:.8}.opacity-90{opacity:.9}.shadow-\[4px_4px_0_\#14121F\]{--tw-shadow:4px 4px 0 #14121f;--tw-shadow-colored:4px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.blur{--tw-blur:blur(8px)}.blur,.saturate-\[1\.15\]{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.saturate-\[1\.15\]{--tw-saturate:saturate(1.15)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-700{transition-duration:.7s}.ease-in-out{transition-timing-function:cubic-bezier(.4,0,.2,1)}.selection\:bg-\[\#D7FF3A\] ::-moz-selection{--tw-bg-opacity:1;background-color:rgb(215 255 58/var(--tw-bg-opacity,1))}.selection\:bg-\[\#D7FF3A\] ::selection{--tw-bg-opacity:1;background-color:rgb(215 255 58/var(--tw-bg-opacity,1))}.selection\:text-black ::-moz-selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.selection\:text-black ::selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.selection\:bg-\[\#D7FF3A\]::-moz-selection{--tw-bg-opacity:1;background-color:rgb(215 255 58/var(--tw-bg-opacity,1))}.selection\:bg-\[\#D7FF3A\]::selection{--tw-bg-opacity:1;background-color:rgb(215 255 58/var(--tw-bg-opacity,1))}.selection\:text-black::-moz-selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.selection\:text-black::selection{--tw-text-opacity:1;color:rgb(0 0 0/var(--tw-text-opacity,1))}.hover\:rotate-90:hover{--tw-rotate:90deg;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:\!bg-\[\#7B5CFF\]:hover{--tw-bg-opacity:1!important;background-color:rgb(123 92 255/var(--tw-bg-opacity,1))!important}.group:hover .group-hover\:scale-125{--tw-scale-x:1.25;--tw-scale-y:1.25}.group:hover .group-hover\:scale-125,.group:hover .group-hover\:scale-150{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:scale-150{--tw-scale-x:1.5;--tw-scale-y:1.5}.group:hover .group-hover\:opacity-20{opacity:.2}@media (min-width:640px){.sm\:col-span-2{grid-column:span 2/span 2}.sm\:block{display:block}.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:768px){.md\:block{display:block}.md\:w-36{width:9rem}.md\:flex-row{flex-direction:row}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-8xl{font-size:6rem;line-height:1}.md\:text-base{font-size:1rem;line-height:1.5rem}}@media (min-width:1280px){.xl\:col-span-4{grid-column:span 4/span 4}.xl\:col-span-8{grid-column:span 8/span 8}.xl\:grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}}</style>
+</head>
+<body class="antialiased selection:bg-[#D7FF3A] selection:text-black pb-24">
+
+    <div id="progress"></div>
+    <div id="cursor-blob"></div>
+
+    <!-- Background Pastel Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Hero Section -->
+    <header class="pt-20 pb-12 px-6 text-center relative z-10 overflow-hidden">
+        <!-- Floating decorations -->
+        <span class="deco text-5xl text-[#FF3D8B] top-24 left-[8%]" style="animation-delay:-1s">✦</span>
+        <span class="deco text-4xl text-[#00C2D1] top-56 right-[10%]" style="animation-delay:-3s">●</span>
+        <span class="deco text-6xl text-[#7B5CFF] bottom-40 left-[14%]" style="animation-delay:-2s">✺</span>
+        <span class="deco text-5xl text-[#FF8A3D] top-16 right-[22%] hidden md:block" style="animation-delay:-4s">▲</span>
+        <span class="deco deco-spin text-7xl text-[#D7FF3A] bottom-56 right-[6%] hidden md:block" style="-webkit-text-stroke:2px #14121F">✳</span>
+
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+
+            <!-- PROFILE PICTURE: CAMERA VIEWFINDER (PRODUCER VIBE) -->
+            <div class="camera-viewfinder" id="viewfinder">
+                <div class="cam-overlay"></div>
+                <div class="cam-corner cam-tl"></div>
+                <div class="cam-corner cam-tr"></div>
+                <div class="cam-corner cam-bl"></div>
+                <div class="cam-corner cam-br"></div>
+
+                <!-- REC Indicator -->
+                <div class="absolute top-5 left-6 z-30 flex items-center gap-2 cam-text font-bold text-[#FF3D8B] text-sm">
+                    <div class="w-3 h-3 rounded-full bg-[#FF3D8B] animate-pulse"></div> REC
+                </div>
+
+                <!-- Timecode -->
+                <div class="absolute top-5 right-6 z-30 cam-text text-white text-xs opacity-90" id="timecode">
+                    00:12:24:03
+                </div>
+
+                <!-- Camera Specs -->
+                <div class="absolute bottom-5 left-5 right-5 z-30 flex justify-between cam-text text-white text-[10px] opacity-80 px-2">
+                    <span>F1.8</span>
+                    <span>ISO 400</span>
+                    <span>4K 60FPS</span>
+                </div>
+
+                <img src="./profile.jpg" alt="Profile" fetchpriority="high" decoding="async" class="w-full h-full object-cover filter saturate-[1.15] relative z-10" />
+
+                <span class="absolute -bottom-4 -right-8 bg-[#D7FF3A] text-black px-4 py-1.5 font-black text-sm uppercase tracking-widest rotate-[12deg] shadow-[4px_4px_0_#14121F] z-40 border-2 border-black rounded-lg">
+                    PRODUCER
+                </span>
+                <span class="scribble absolute -top-9 -left-16 text-3xl rotate-[-14deg] z-40 hidden sm:block">hi there! ↘</span>
+            </div>
+
+            <span class="sticker sticker-cyan mb-6 relative z-10">HIU Student</span>
+
+            <h1 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter uppercase relative z-10 leading-none" id="hero-name" aria-label="Đào Gia Kiệt">
+                <span data-split>ĐÀO GIA</span> <span data-split class="name-outline">KIỆT</span>
+            </h1>
+        </div>
+
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <span>CREATIVE PRODUCER ✦ SẢN XUẤT SÁNG TẠO & TRUYỀN THÔNG ✦</span>
+                <span>CREATIVE PRODUCER ✦ SẢN XUẤT SÁNG TẠO & TRUYỀN THÔNG ✦</span>
+                <span>CREATIVE PRODUCER ✦ SẢN XUẤT SÁNG TẠO & TRUYỀN THÔNG ✦</span>
+                <span>CREATIVE PRODUCER ✦ SẢN XUẤT SÁNG TẠO & TRUYỀN THÔNG ✦</span>
+            </div>
+        </div>
+        <div class="marquee-container alt mb-10">
+            <div class="marquee-content">
+                <span>CONCEPT ● PRODUCTION ● VIDEO ● PHOTO ● CONTENT ● EVENT ●</span>
+                <span>CONCEPT ● PRODUCTION ● VIDEO ● PHOTO ● CONTENT ● EVENT ●</span>
+                <span>CONCEPT ● PRODUCTION ● VIDEO ● PHOTO ● CONTENT ● EVENT ●</span>
+                <span>CONCEPT ● PRODUCTION ● VIDEO ● PHOTO ● CONTENT ● EVENT ●</span>
+            </div>
+        </div>
+
+        <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-3 text-sm md:text-base font-bold uppercase tracking-widest mt-4 relative z-10">
+            <span class="pill reveal">📍 TP. Hồ Chí Minh</span>
+            <span class="pill reveal">📞 0979 824 813</span>
+            <span class="pill reveal">✉️ dgkiet.work@gmail.com</span>
+            <a href="https://www.facebook.com/daokiet260206" class="pill reveal !bg-[#FF3D8B] text-white hover:!bg-[#7B5CFF]" target="_blank">Fb: daokiet260206</a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 mt-8 grid grid-cols-1 xl:grid-cols-12 gap-8 relative z-10">
+
+        <!-- Sidebar (Left Column) -->
+        <div class="space-y-8 xl:col-span-4">
+
+            <!-- GIỚI THIỆU -->
+            <section class="glass-card shadow-cyan p-8 relative overflow-hidden reveal">
+                <div class="absolute -top-6 -right-6 w-24 h-24 bg-[#00C2D1] opacity-20 rounded-full"></div>
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-wide flex items-center gap-2">
+                    <span class="text-[#00C2D1]">#</span> GIỚI THIỆU
+                </h2>
+                <p class="text-[#14121F]/80 leading-relaxed font-medium">
+                    Sinh viên Truyền thông Đa phương tiện tại Hong Bang International University có hơn 2 năm kinh nghiệm thực tế trong Creative Production, Content, Media và triển khai dự án. Có kinh nghiệm làm việc trực tiếp với client, phát triển ý tưởng, điều phối production team và kiểm soát chất lượng từ brief đến sản phẩm cuối. Định hướng phát triển chuyên môn trong vai trò Creative Producer.
+                </p>
+            </section>
+
+            <!-- HỌC VẤN -->
+            <section class="glass-card shadow-lime p-8 reveal">
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-wide flex items-center gap-2">
+                    <span class="text-[#A8CC00]">#</span> HỌC VẤN
+                </h2>
+                <h3 class="font-bold text-xl mb-2 leading-tight">HONG BANG INTERNATIONAL UNIVERSITY (HIU)</h3>
+                <p class="text-[#7B5CFF] font-bold mb-4">Truyền thông Đa phương tiện · 2024 – Nay</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="sticker sticker-yellow">GPA: 3.71/4.0</span>
+                    <span class="sticker sticker-pink text-xs flex items-center">Lớp trưởng 3 năm liên tiếp</span>
+                </div>
+            </section>
+
+            <!-- NĂNG LỰC CHUYÊN MÔN -->
+            <section class="glass-card shadow-pink p-8 reveal">
+                <h2 class="text-2xl font-black mb-6 uppercase tracking-wide flex items-center gap-2">
+                    <span class="text-[#FF3D8B]">#</span> NĂNG LỰC
+                </h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-black text-sm mb-3 opacity-50 uppercase tracking-widest">Creative & Production</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="chip">Concept Development</span>
+                            <span class="chip">Storyboard</span>
+                            <span class="chip">Creative Direction</span>
+                            <span class="chip">Video Production</span>
+                            <span class="chip">Videography</span>
+                            <span class="chip">Photography</span>
+                            <span class="chip">Video Editing</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-sm mb-3 opacity-50 uppercase tracking-widest">Project & Client</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="chip chip-pink font-bold">Bóc tách Brief</span>
+                            <span class="chip">Client Communication</span>
+                            <span class="chip">Production Coordination</span>
+                            <span class="chip">Team Management</span>
+                            <span class="chip">Quality Control</span>
+                            <span class="chip">Event Production</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-sm mb-3 opacity-50 uppercase tracking-widest">Công cụ</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="chip">Premiere Pro</span>
+                            <span class="chip">Photoshop</span>
+                            <span class="chip">Illustrator</span>
+                            <span class="chip">InDesign</span>
+                            <span class="chip">Canva</span>
+                            <span class="chip">CapCut</span>
+                            <span class="chip chip-cyan font-bold">OBS</span>
+                            <span class="chip chip-lime font-bold">AI Agent</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Main Content (Right Column) -->
+        <div class="xl:col-span-8 space-y-8">
+
+            <!-- DỰ ÁN HỌC TẬP TIÊU BIỂU -->
+            <div>
+                <h2 class="text-2xl md:text-3xl font-black mb-8 uppercase tracking-wider reveal">
+                    <span class="section-title"><span class="emoji">🔥</span> DỰ ÁN HỌC TẬP TIÊU BIỂU</span>
+                </h2>
+
+                <!-- SẮC TUỒNG SẮC DIỆN -->
+                <div class="glass-card shadow-pink p-8 flex flex-col md:flex-row gap-8 mb-8 relative overflow-hidden group reveal tilt">
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-[#FF3D8B] opacity-10 rounded-full group-hover:scale-125 group-hover:opacity-20 transition-all duration-700"></div>
+
+                    <div class="flex-1 z-10">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="tag bg-white">06/2026</span>
+                            <span class="tag bg-[#FF3D8B] text-white">Phó Trưởng BTC</span>
+                            <span class="tag bg-[#7B5CFF] text-white">Creative & Media Lead</span>
+                        </div>
+                        <h3 class="text-3xl font-black mb-6">SẮC TUỒNG SẮC DIỆN</h3>
+
+                        <ul class="cv-list">
+                            <li>Trực tiếp pitch và bảo vệ concept trước giảng viên; tham gia xây dựng ngân sách, timeline và phương án triển khai.</li>
+                            <li>Lead team 04 người, phân công công việc, review và duyệt toàn bộ visual/communication output.</li>
+                            <li>Tham gia quản lý ngân sách 28,2 triệu đồng, trong đó 17 triệu đồng từ sponsor.</li>
+                            <li>Xây dựng hệ thống ticketing và e-ticket tự động bằng AutoCrat; trực tiếp điều phối technical flow trong ngày diễn.</li>
+                            <li>Bán 300+ vé; sự kiện thu hút earned media từ The Heritage Vietnam và Báo Sài Gòn Giải Phóng.</li>
+                        </ul>
+                    </div>
+
+                    <div class="md:w-36 flex-shrink-0 flex items-center justify-center z-10">
+                        <button class="folder-action flex flex-col items-center gap-4 w-full" onclick="openModal('modal-1')">
+                            <div class="folder-wrapper f-pink">
+                                <div class="folder-back"></div>
+                                <div class="folder-paper"></div>
+                                <div class="folder-front"></div>
+                            </div>
+                            <span class="cta-view" style="--cta: var(--pink)">Mở xem<br>sản phẩm <span class="arrow">→</span></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CÁC SẢN PHẨM HỌC TẬP KHÁC -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <!-- Music Video -->
+                    <div class="glass-card shadow-cyan p-6 flex flex-col gap-4 relative overflow-hidden group reveal tilt">
+                        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-[#00C2D1] opacity-15 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="z-10 flex-1">
+                            <h4 class="font-black text-xl mb-3">🎬 Music Video <span class="tag bg-[#00C2D1] text-white align-middle ml-1">REMAKE</span></h4>
+                            <p class="text-[#14121F]/75 text-sm leading-relaxed">Phát triển concept · Điều phối/đạo diễn production · Edit toàn bộ MV</p>
+                        </div>
+                        <div class="z-10 border-t-2 border-dashed border-[#14121F]/20 pt-4 mt-2">
+                            <button class="folder-action flex items-center justify-between w-full" onclick="openModal('modal-mv')">
+                                <span class="cta-view" style="--cta: var(--cyan)">Mở xem sản phẩm <span class="arrow">→</span></span>
+                                <div class="folder-wrapper f-cyan" style="transform: scale(0.6); transform-origin: right center;">
+                                    <div class="folder-back"></div>
+                                    <div class="folder-paper"></div>
+                                    <div class="folder-front"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Editorial Magazine -->
+                    <div class="glass-card shadow-lime p-6 flex flex-col gap-4 relative overflow-hidden group reveal tilt">
+                        <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-[#D7FF3A] opacity-40 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="z-10 flex-1">
+                            <h4 class="font-black text-xl mb-3">📸 Editorial Magazine</h4>
+                            <p class="text-[#14121F]/75 text-sm leading-relaxed">Photography · Visual Research · Layout</p>
+                        </div>
+                        <div class="z-10 border-t-2 border-dashed border-[#14121F]/20 pt-4 mt-2">
+                            <button class="folder-action flex items-center justify-between w-full" onclick="openModal('modal-mag')">
+                                <span class="cta-view cta-dark-text" style="--cta: var(--lime)">Mở xem sản phẩm <span class="arrow">→</span></span>
+                                <div class="folder-wrapper f-yellow" style="transform: scale(0.6); transform-origin: right center;">
+                                    <div class="folder-back"></div>
+                                    <div class="folder-paper"></div>
+                                    <div class="folder-front"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Talkshow -->
+                    <div class="glass-card shadow-orange p-6 flex flex-col gap-4 relative overflow-hidden group reveal tilt sm:col-span-2">
+                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-[#FF8A3D] opacity-15 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="z-10 flex-1">
+                            <h4 class="font-black text-xl mb-3">🎙️ Talkshow</h4>
+                            <p class="text-[#14121F]/75 text-sm leading-relaxed">Đạo diễn · Edit toàn bộ video</p>
+                        </div>
+                        <div class="z-10 border-t-2 border-dashed border-[#14121F]/20 pt-4 mt-2">
+                            <button class="folder-action flex items-center justify-between w-full" onclick="openModal('modal-talk')">
+                                <span class="cta-view" style="--cta: var(--orange)">Mở xem sản phẩm <span class="arrow">→</span></span>
+                                <div class="folder-wrapper f-orange" style="transform: scale(0.6); transform-origin: right center;">
+                                    <div class="folder-back"></div>
+                                    <div class="folder-paper"></div>
+                                    <div class="folder-front"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KINH NGHIỆM -->
+            <div class="pt-8">
+                <h2 class="text-2xl md:text-3xl font-black mb-8 uppercase tracking-wider reveal">
+                    <span class="section-title" style="box-shadow:5px 5px 0 var(--pink)"><span class="emoji">💼</span> KINH NGHIỆM</span>
+                </h2>
+
+                <div class="space-y-8">
+                    <!-- SÒ HẢI SẢN & NƯỚNG -->
+                    <div class="glass-card shadow-orange p-8 flex flex-col md:flex-row gap-8 relative overflow-hidden group reveal tilt">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#FF8A3D] opacity-10 rounded-full group-hover:scale-125 group-hover:opacity-20 transition-all duration-700"></div>
+                        <div class="flex-1 z-10">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="tag bg-white">03/2026 - NAY</span>
+                                <span class="tag bg-[#FF8A3D] text-white">Freelance</span>
+                                <span class="tag bg-[#FFE3CF]">Client & Media Production</span>
+                            </div>
+                            <h3 class="text-2xl font-black mb-6">SÒ HẢI SẢN & NƯỚNG</h3>
+                            <ul class="cv-list">
+                                <li>Trực tiếp tiếp nhận nhu cầu từ client, đề xuất hướng triển khai và chủ động thực hiện production.</li>
+                                <li>Trực tiếp quay, chụp và sản xuất social content tại nhà hàng, ưu tiên hình ảnh và trải nghiệm thực tế.</li>
+                                <li>Phối hợp production, kiểm soát chất lượng và bàn giao sản phẩm.</li>
+                                <li>Hợp đồng ban đầu 3 tháng, client tiếp tục hợp tác với cùng phạm vi công việc.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-36 flex-shrink-0 flex items-center justify-center z-10">
+                            <button class="folder-action flex flex-col items-center gap-4 w-full" onclick="openModal('modal-2')">
+                                <div class="folder-wrapper f-orange">
+                                    <div class="folder-back"></div>
+                                    <div class="folder-paper"></div>
+                                    <div class="folder-front"></div>
+                                </div>
+                                <span class="cta-view" style="--cta: var(--orange)">Mở xem<br>sản phẩm <span class="arrow">→</span></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- YOUBALANCE -->
+                    <div class="glass-card shadow-violet p-8 flex flex-col md:flex-row gap-8 relative overflow-hidden group reveal tilt">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#7B5CFF] opacity-10 rounded-full group-hover:scale-125 group-hover:opacity-20 transition-all duration-700"></div>
+                        <div class="flex-1 z-10">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="tag bg-white">09/2025 - NAY</span>
+                                <span class="tag bg-[#7B5CFF] text-white">Freelance</span>
+                                <span class="tag bg-[#E6E0FF]">Content Creator & Website</span>
+                            </div>
+                            <h3 class="text-2xl font-black mb-6">YOUBALANCE</h3>
+                            <ul class="cv-list">
+                                <li>Sản xuất social post và video content theo định hướng thương hiệu.</li>
+                                <li>Trực tiếp nhận brief và triển khai nội dung với người phụ trách thương hiệu.</li>
+                                <li>Mở rộng phạm vi công việc sang website, thực hiện chỉnh sửa giao diện và hình ảnh bằng Elementor.</li>
+                                <li>Ứng dụng AI Agent để hỗ trợ triển khai website dựa trên brand guideline và yêu cầu thực tế.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-36 flex-shrink-0 flex items-center justify-center z-10">
+                            <button class="folder-action flex flex-col items-center gap-4 w-full" onclick="openModal('modal-3')">
+                                <div class="folder-wrapper f-violet">
+                                    <div class="folder-back"></div>
+                                    <div class="folder-paper"></div>
+                                    <div class="folder-front"></div>
+                                </div>
+                                <span class="cta-view" style="--cta: var(--violet)">Mở xem<br>sản phẩm <span class="arrow">→</span></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TRUNG TÂM TUYỂN SINH -->
+                    <div class="glass-card shadow-cyan p-8 flex flex-col md:flex-row gap-8 relative overflow-hidden group reveal tilt">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#00C2D1] opacity-10 rounded-full group-hover:scale-125 group-hover:opacity-20 transition-all duration-700"></div>
+                        <div class="flex-1 z-10">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="tag bg-white">2024 - NAY</span>
+                                <span class="tag bg-[#00C2D1] text-white">Media Collaborator</span>
+                                <span class="tag bg-[#D4F7FA]">Livestream Production</span>
+                            </div>
+                            <h3 class="text-2xl font-black mb-6">TRUNG TÂM TUYỂN SINH VÀ TRUYỀN THÔNG HIU</h3>
+                            <ul class="cv-list">
+                                <li>Tham gia sản xuất truyền thông qua 2 mùa hoạt động.</li>
+                                <li>Trực tiếp setup camera, thiết bị và vận hành livestream bằng OBS.</li>
+                                <li>Tham gia quay/chụp và sản xuất nội dung phục vụ fanpage, TikTok và truyền thông tuyển sinh.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-36 flex-shrink-0 flex items-center justify-center z-10">
+                            <button class="folder-action flex flex-col items-center gap-4 w-full" onclick="openModal('modal-4')">
+                                <div class="folder-wrapper f-cyan">
+                                    <div class="folder-back"></div>
+                                    <div class="folder-paper"></div>
+                                    <div class="folder-front"></div>
+                                </div>
+                                <span class="cta-view" style="--cta: var(--cyan)">Mở xem<br>sản phẩm <span class="arrow">→</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center mt-20 px-6 relative z-10 reveal">
+        <p class="scribble text-4xl mb-2">Let's create something cool together!</p>
+        <p class="font-bold uppercase tracking-widest text-sm opacity-60">© Đào Gia Kiệt · Creative Producer</p>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal-1" class="modal-overlay" onclick="closeModal('modal-1', event)">
+        <div class="modal-content modal-lg" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">📁 SẮC TUỒNG SẮC DIỆN</h4>
+                <button onclick="closeModal('modal-1')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="modal-body">
+                <p class="font-medium mb-5 text-[#14121F]/80">Chương trình hát bội “Giữ lớp son ngời, khơi lời kể mới” do sinh viên khoa Khoa học Xã hội (ĐH Quốc tế Hồng Bàng) tổ chức, đưa nghệ thuật hát bội vào không gian học đường qua biểu diễn, giao lưu và trải nghiệm.</p>
+
+                <div class="stsd-stats">
+                    <div class="stsd-stat"><b>300+</b><span>Khán giả trẻ</span></div>
+                    <div class="stsd-stat"><b>12</b><span>Thành viên BTC</span></div>
+                    <div class="stsd-stat"><b>1+ tháng</b><span>Chuẩn bị</span></div>
+                </div>
+
+                <h5 class="stsd-sub">🔗 Kênh chương trình & truyền thông</h5>
+                <div class="stsd-links">
+                    <button type="button" class="stsd-link" id="stsd-poster-card" style="--c: var(--lime); width:100%; text-align:left; cursor:pointer; font:inherit">
+                        <span class="ico"><img src="img/poster-thumb.webp" width="48" height="60" loading="lazy" decoding="async" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src=this.getAttribute('src').replace(/^img\//,'')}" style="width:48px;height:60px;object-fit:cover;border:2px solid var(--ink);border-radius:8px;display:block"></span>
+                        <span><div class="t">Poster chương trình Sắc Tuồng Sắc Diện</div><div class="d" id="stsd-poster-desc">25/06/2026 · Hội trường Beethoven, ĐH Quốc tế Hồng Bàng · Bấm để xem poster</div></span>
+                        <span class="go">↗</span>
+                    </button>
+                    <a class="stsd-link" style="--c: var(--pink)" href="https://www.facebook.com/profile.php?id=61590417146539" target="_blank" rel="noopener">
+                        <span class="ico">📣</span>
+                        <span><div class="t">Fanpage Sắc Tuồng Sắc Diện</div><div class="d">Kênh truyền thông chính thức của chương trình</div></span>
+                        <span class="go">↗</span>
+                    </a>
+                    <a class="stsd-link" style="--c: var(--violet)" href="https://www.facebook.com/share/p/19MmTvQb9k/" target="_blank" rel="noopener">
+                        <span class="ico">🏛️</span>
+                        <span><div class="t">The Heritage Vietnam</div><div class="d">Bài viết về chương trình (earned media)</div></span>
+                        <span class="go">↗</span>
+                    </a>
+                    <a class="stsd-link" style="--c: var(--cyan)" href="https://www.sggp.org.vn/ke-tiep-cau-chuyen-di-san-post862964.html" target="_blank" rel="noopener">
+                        <span class="ico">📰</span>
+                        <span><div class="t">Báo Sài Gòn Giải Phóng — “Kể tiếp câu chuyện di sản”</div><div class="d">Bài báo ngày 19/07/2026, mục Tuổi trẻ cuộc sống</div></span>
+                        <span class="go">↗</span>
+                    </a>
+                </div>
+
+                <h5 class="stsd-sub">📸 Hình ảnh chương trình</h5>
+                <div class="stsd-gallery" id="stsd-gallery"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox" onclick="this.classList.remove('active')"><img alt=""></div>
+
+    <div id="modal-mv" class="modal-overlay" onclick="closeModal('modal-mv', event)">
+        <div class="modal-content modal-lg" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">🎬 Music Video (REMAKE)</h4>
+                <button onclick="closeModal('modal-mv')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="modal-body">
+                <div class="video-frame" style="--c: var(--cyan)">
+                    <button type="button" class="facade" data-embed="https://www.youtube-nocookie.com/embed/c21f88MEx8M?autoplay=1&rel=0&modestbranding=1" data-title="Music Video (REMAKE)"><img class="facade-bg" src="https://i.ytimg.com/vi/c21f88MEx8M/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='https://i.ytimg.com/vi/c21f88MEx8M/hqdefault.jpg'}else{this.remove()}"><span class="facade-play">▶</span><span class="facade-label">Bấm để phát video</span><span class="facade-spin"></span></button>
+                </div>
+                <div class="video-meta"><span class="tag bg-white">Bài tập học phần</span><span class="tag bg-[#00C2D1] text-white">Remake</span><span class="tag bg-[#D4F7FA]">Concept · Điều phối/Đạo diễn · Edit</span></div>
+                <p class="text-sm text-[#14121F]/60">Sản phẩm remake thực hiện trong khuôn khổ bài tập học tập, không phải sản phẩm thương mại.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-mag" class="modal-overlay" onclick="closeModal('modal-mag', event)">
+        <div class="modal-content modal-lg" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">📸 Editorial Magazine</h4>
+                <button onclick="closeModal('modal-mag')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="modal-body">
+                <p class="font-medium mb-5 text-[#14121F]/80">Tạp chí ảnh “Bạch Ngọc Kinh Tại Thế” về Tòa Thánh Tây Ninh: nhiếp ảnh, nghiên cứu hình ảnh và dàn trang.</p>
+                <h5 class="stsd-sub">📖 Lật xem tạp chí</h5>
+                <div class="video-frame" style="--c: var(--lime); aspect-ratio: 4/3">
+                    <button type="button" class="facade" data-embed="https://heyzine.com/flip-book/24704bee3e.html" data-title="Editorial Magazine flipbook"><img class="facade-bg" src="img/mg1-thumb.webp" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src=this.getAttribute('src').replace(/^img\//,'')}else{this.remove()}"><span class="facade-play">▶</span><span class="facade-label">Bấm để lật xem tạp chí</span><span class="facade-spin"></span></button>
+                </div>
+                <div class="video-meta">
+                    <span class="tag bg-[#D7FF3A]">Photography</span><span class="tag bg-white">Visual Research</span><span class="tag bg-[#D7FF3A]">Layout</span>
+                </div>
+
+                <div class="stsd-links" style="margin-top:16px">
+                    <a class="stsd-link" style="--c: var(--lime)" href="https://heyzine.com/flip-book/24704bee3e.html" target="_blank" rel="noopener">
+                        <span class="ico">📚</span>
+                        <span><div class="t">Mở flipbook toàn màn hình</div><div class="d">Xem trên Heyzine ở tab mới</div></span>
+                        <span class="go">↗</span>
+                    </a>
+                </div>
+
+                <h5 class="stsd-sub">🖼️ Trang tiêu biểu</h5>
+                <div class="stsd-gallery" id="mag-gallery"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-talk" class="modal-overlay" onclick="closeModal('modal-talk', event)">
+        <div class="modal-content modal-lg" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">🎙️ Talkshow</h4>
+                <button onclick="closeModal('modal-talk')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="modal-body">
+                <div class="video-frame" style="--c: var(--orange)">
+                    <button type="button" class="facade" data-embed="https://www.youtube-nocookie.com/embed/vWVMSD700BQ?autoplay=1&rel=0&modestbranding=1" data-title="Talkshow"><img class="facade-bg" src="https://i.ytimg.com/vi/vWVMSD700BQ/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='https://i.ytimg.com/vi/vWVMSD700BQ/hqdefault.jpg'}else{this.remove()}"><span class="facade-play">▶</span><span class="facade-label">Bấm để phát video</span><span class="facade-spin"></span></button>
+                </div>
+                <div class="video-meta"><span class="tag bg-[#FF8A3D] text-white">Đạo diễn</span><span class="tag bg-[#FFE3CF]">Edit</span></div>
+                <p class="text-sm text-[#14121F]/60">Phụ trách đạo diễn và dựng toàn bộ video.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-2" class="modal-overlay" onclick="closeModal('modal-2', event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">📁 SÒ HẢI SẢN & NƯỚNG</h4>
+                <button onclick="closeModal('modal-2')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="p-10 text-center text-[#14121F]/70">
+                <div class="text-5xl mb-4 modal-icon">🗂️</div>
+                <p class="font-medium text-lg">Khu vực hiển thị sản phẩm: hình ảnh / báo cáo / video của dự án</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-3" class="modal-overlay" onclick="closeModal('modal-3', event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">📁 YOUBALANCE</h4>
+                <button onclick="closeModal('modal-3')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="p-10 text-center text-[#14121F]/70">
+                <div class="text-5xl mb-4 modal-icon">🗂️</div>
+                <p class="font-medium text-lg">Khu vực hiển thị sản phẩm: hình ảnh / báo cáo / video của dự án</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-4" class="modal-overlay" onclick="closeModal('modal-4', event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-head p-6 flex justify-between items-center">
+                <h4 class="font-black text-xl uppercase tracking-wider">📁 TRUNG TÂM TUYỂN SINH HIU</h4>
+                <button onclick="closeModal('modal-4')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="p-10 text-center text-[#14121F]/70">
+                <div class="text-5xl mb-4 modal-icon">🗂️</div>
+                <p class="font-medium text-lg">Khu vực hiển thị sản phẩm: hình ảnh / báo cáo / video của dự án</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ảnh chương trình STSD: stsd-01.jpg ... stsd-08.jpg nằm cùng thư mục với index.html
+        const STSD_PHOTOS = Array.from({length: 8}, (_, i) => `stsd-${String(i + 1).padStart(2, '0')}.jpg`);
+        // Lightbox: hiện ảnh nhỏ ngay, rồi thay bằng ảnh nét khi tải xong
+        function flat(u) { return u.replace(/^img\//, ''); }
+        function loadWithFallback(img, url) {
+            img.onerror = () => { img.onerror = null; img.src = flat(url); };
+            img.src = url;
+        }
+        function showLightbox(thumb, full) {
+            const lb = document.getElementById('lightbox');
+            const img = lb.querySelector('img');
+            loadWithFallback(img, thumb);
+            lb.classList.add('active');
+            if (full !== thumb) {
+                const hi = new Image();
+                hi.onload = () => { if (lb.classList.contains('active')) img.src = hi.src; };
+                loadWithFallback(hi, full);
+            }
+        }
+
+        // Video / flipbook: chỉ tải khi bấm (facade)
+        document.querySelectorAll('.facade').forEach(f => {
+            f.addEventListener('click', () => {
+                if (f.classList.contains('loading') || f.classList.contains('done')) return;
+                f.classList.add('loading');
+                const ifr = document.createElement('iframe');
+                ifr.title = f.dataset.title;
+                ifr.allow = 'autoplay; fullscreen';
+                ifr.allowFullscreen = true;
+                const ready = () => { f.classList.remove('loading'); f.classList.add('done'); };
+                ifr.onload = ready;
+                setTimeout(ready, 15000);
+                ifr.src = f.dataset.embed;
+                f.parentElement.appendChild(ifr);
+            });
+        });
+
+        // Mở kết nối sớm tới Drive / Heyzine khi người xem rê chuột hoặc chạm vào thẻ
+        const warmed = new Set();
+        function warm(origin) {
+            if (warmed.has(origin)) return;
+            warmed.add(origin);
+            const l = document.createElement('link');
+            l.rel = 'preconnect'; l.href = origin;
+            document.head.appendChild(l);
+        }
+        [['modal-mv', 'https://www.youtube-nocookie.com'], ['modal-talk', 'https://www.youtube-nocookie.com'], ['modal-mag', 'https://heyzine.com']].forEach(([id, origin]) => {
+            document.querySelectorAll(`[onclick*="openModal('${id}')"]`).forEach(btn => {
+                ['pointerenter', 'touchstart'].forEach(ev => btn.addEventListener(ev, () => warm(origin), { passive: true, once: true }));
+            });
+        });
+
+        // Poster STSD (img/poster.webp + bản nhỏ img/poster-thumb.webp)
+        document.getElementById('stsd-poster-card').onclick = () => showLightbox('img/poster-thumb.webp', 'img/poster.webp');
+
+        // Trang tạp chí "Bạch Ngọc Kinh Tại Thế" (img/mgN-thumb.webp hiện trước, img/mgN.webp khi phóng to)
+        const MAG_PAGES = [
+            { wide: true,  n: 'mg1' },
+            { wide: true,  n: 'mg2' },
+            { wide: false, n: 'mg3' },
+            { wide: false, n: 'mg4' }
+        ];
+        const magGallery = document.getElementById('mag-gallery');
+        MAG_PAGES.forEach((pg, i) => {
+            const b = document.createElement('button');
+            b.className = 'stsd-photo' + (pg.wide ? ' wide' : ' tall');
+            const img = new Image();
+            img.alt = `Editorial Magazine – trang ${i + 1}`;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            loadWithFallback(img, `img/${pg.n}-thumb.webp`);
+            b.onclick = () => showLightbox(`img/${pg.n}-thumb.webp`, `img/${pg.n}.webp`);
+            b.appendChild(img);
+            magGallery.appendChild(b);
+        });
+        const gallery = document.getElementById('stsd-gallery');
+        STSD_PHOTOS.forEach((src, i) => {
+            const b = document.createElement('button');
+            b.className = 'stsd-photo';
+            const img = new Image();
+            img.loading = 'lazy';
+            img.alt = `Sắc Tuồng Sắc Diện – hình ${i + 1}`;
+            img.decoding = 'async';
+            img.onload = () => b.onclick = () => showLightbox(src, src);
+            img.onerror = () => { b.classList.add('missing'); b.textContent = 'Chưa có ảnh: ' + src.split('/').pop(); };
+            img.src = src;
+            b.appendChild(img);
+            gallery.appendChild(b);
+        });
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function unloadMedia(m) {
+            m.querySelectorAll('.video-frame iframe').forEach(f => f.remove());
+            m.querySelectorAll('.facade').forEach(f => f.classList.remove('loading', 'done'));
+        }
+
+        function closeModal(id, event) {
+            if(event) event.stopPropagation();
+            const m = document.getElementById(id);
+            m.classList.remove('active');
+            unloadMedia(m);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active, .lightbox.active').forEach(m => { m.classList.remove('active'); unloadMedia(m); });
+        });
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Split hero name into animated letters
+        let delay = 0.3;
+        document.querySelectorAll('[data-split]').forEach(el => {
+            const text = el.textContent;
+            el.textContent = '';
+            [...text].forEach(ch => {
+                if (ch === ' ') { el.append(' '); return; }
+                const s = document.createElement('span');
+                s.className = 'name-letter';
+                s.textContent = ch;
+                s.setAttribute('aria-hidden', 'true');
+                s.style.animationDelay = delay + 's';
+                s.addEventListener('animationend', () => { s.style.opacity = 1; s.style.transform = 'none'; }, { once: true });
+                delay += 0.06;
+                el.append(s);
+            });
+        });
+
+        // Scroll reveal with stagger
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const t = entry.target;
+                    t.classList.add('visible');
+                    io.unobserve(t);
+                    setTimeout(() => { t.style.transitionDelay = ''; t.classList.remove('reveal'); t.classList.remove('visible'); }, 1200);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => {
+            const siblings = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+            el.style.transitionDelay = (siblings.indexOf(el) * 0.08) + 's';
+            io.observe(el);
+        });
+
+        // Scroll progress
+        const bar = document.getElementById('progress');
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - innerHeight;
+            bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+        }, { passive: true });
+
+        // Running timecode
+        const tc = document.getElementById('timecode');
+        let frames = ((12 * 60) + 24) * 60 + 3;
+        setInterval(() => {
+            frames++;
+            const f = frames % 60, s = Math.floor(frames / 60) % 60, m = Math.floor(frames / 3600) % 60;
+            const p = n => String(n).padStart(2, '0');
+            tc.textContent = `00:${p(m)}:${p(s)}:${p(f)}`;
+        }, 1000 / 30);
+
+        if (!reduceMotion && matchMedia('(hover: hover)').matches) {
+            // Cursor follower
+            const blob = document.getElementById('cursor-blob');
+            let mx = innerWidth / 2, my = innerHeight / 2, bx = mx, by = my;
+            addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+            (function loop() {
+                bx += (mx - bx) * 0.18; by += (my - by) * 0.18;
+                blob.style.left = bx + 'px'; blob.style.top = by + 'px';
+                requestAnimationFrame(loop);
+            })();
+            document.querySelectorAll('a, button, .chip, .sticker, .pill').forEach(el => {
+                el.addEventListener('mouseenter', () => blob.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => blob.classList.remove('hovering'));
+            });
+
+            // Subtle 3D tilt on cards
+            document.querySelectorAll('.tilt').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const r = card.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - 0.5;
+                    const y = (e.clientY - r.top) / r.height - 0.5;
+                    card.style.transform = `translate(-4px,-4px) perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+            });
+        }
+    </script>
+</body>
+</html>
