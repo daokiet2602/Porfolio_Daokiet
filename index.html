@@ -539,7 +539,7 @@
         function imgCandidates(base) {
             const a = [];
             ['', 'img/', 'images/', 'assets/', 'assets/stsd/'].forEach(d =>
-                ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG'].forEach(e => a.push(d + base + '.' + e)));
+                ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG'].forEach(e => a.push(d + base + '.' + e + '?v=20261009')));
             return a;
         }
         function nextImg(img, base, fail) {
@@ -602,7 +602,7 @@
                     <span>4K 60FPS</span>
                 </div>
 
-                <img src="./profile.jpg" alt="Profile" fetchpriority="high" decoding="async" onerror="nextImg(this,'profile',profileFail)" class="w-full h-full object-cover filter saturate-[1.15] relative z-10" />
+                <img src="profile.jpg?v=20261009" alt="Profile" fetchpriority="high" decoding="async" onerror="nextImg(this,'profile',profileFail)" class="w-full h-full object-cover filter saturate-[1.15] relative z-10" />
 
                 <span class="absolute -bottom-4 -right-8 bg-[#D7FF3A] text-black px-4 py-1.5 font-black text-sm uppercase tracking-widest rotate-[12deg] shadow-[4px_4px_0_#14121F] z-40 border-2 border-black rounded-lg">
                     PRODUCER
@@ -1158,7 +1158,7 @@
             img.decoding = 'async';
             img.onload = () => b.onclick = () => showLightbox(img.src, img.src);
             img.onerror = () => nextImg(img, base, () => { b.classList.add('missing'); b.textContent = 'Chưa có ảnh: ' + base; });
-            img.src = file;
+            img.src = file + '?v=20261009';
             b.appendChild(img);
             gallery.appendChild(b);
         });
