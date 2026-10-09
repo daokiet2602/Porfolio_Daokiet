@@ -538,6 +538,19 @@
             .hiu-item { padding: 10px; gap: 10px; border-width: 2px; }
         }
 
+        /* YOUBALANCE modal */
+        .yb-reels { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+        .yb-reel { display:grid; grid-template-columns:74px 1fr; gap:12px; align-items:center; padding:12px; border:3px solid var(--ink); border-radius:16px; background:#fff; color:var(--ink); text-decoration:none; box-shadow:4px 4px 0 var(--cyan); transition:transform .2s, box-shadow .2s; }
+        .yb-reel:hover { transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--cyan); }
+        .yb-thumb { aspect-ratio:9/16; border:3px solid var(--ink); border-radius:12px; background:linear-gradient(160deg,var(--violet),var(--pink)); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.6rem; font-weight:950; }
+        .yb-reel .t { font-weight:950; line-height:1.2; }
+        .yb-reel .d { margin-top:4px; font-size:.72rem; font-weight:800; opacity:.65; }
+        .yb-post-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+        .yb-post { border:3px solid var(--ink); border-radius:16px; overflow:hidden; background:#fff; box-shadow:4px 4px 0 var(--orange); color:var(--ink); text-decoration:none; display:block; transition:transform .2s, box-shadow .2s; }
+        .yb-post:hover { transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--orange); }
+        .yb-post img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; }
+        @media (max-width: 760px){ .yb-reels{grid-template-columns:1fr;} .yb-post-grid{grid-template-columns:repeat(2,1fr);} }
+
         /* List Styling */
         .cv-list { list-style: none; padding: 0; }
         .cv-list li {
@@ -616,6 +629,79 @@
         @media (max-width: 380px) {
             .camera-viewfinder { width: 230px; height: 285px; }
         }
+
+        /* FLOATING BACKGROUND APP TILES (SQUARE ICONS) */
+        .floating-apps-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .float-app {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--ink);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 4px 4px 0 var(--shadow, var(--ink));
+            opacity: 0.88;
+            user-select: none;
+            will-change: transform;
+            animation: floatDrift linear infinite alternate;
+            transition: transform 0.2s;
+        }
+        .float-app svg {
+            width: 28px;
+            height: 28px;
+            display: block;
+        }
+        .float-app span.txt-icon {
+            font-size: 1.25rem;
+            font-weight: 950;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+
+        /* 10 Apps positions, shadows, speeds and delays */
+        .fa-pr { top: 10%; left: 4%;   background: #00005B; color: #9999FF; --shadow: var(--violet); animation-duration: 22s; animation-delay: 0s; }
+        .fa-ps { top: 24%; right: 4%;  background: #001E36; color: #31A8FF; --shadow: var(--cyan);   animation-duration: 25s; animation-delay: -3s; }
+        .fa-ai { top: 56%; left: 3%;   background: #330000; color: #FF9A00; --shadow: var(--orange); animation-duration: 24s; animation-delay: -7s; }
+        .fa-id { top: 74%; right: 5%;  background: #49021F; color: #FF3366; --shadow: var(--pink);   animation-duration: 26s; animation-delay: -11s; }
+        .fa-obs{ top: 40%; left: 7%;   background: #1F2326; color: #00D2FF; --shadow: var(--lime);   animation-duration: 27s; animation-delay: -5s; }
+        .fa-cap{ top: 88%; left: 16%;  background: #0D0D11; color: #FFFFFF; --shadow: var(--cyan);   animation-duration: 23s; animation-delay: -9s; }
+        .fa-can{ top: 18%; right: 16%; background: linear-gradient(135deg, #00C4CC, #7D2AE8); color: #FFFFFF; --shadow: var(--violet); animation-duration: 26s; animation-delay: -14s; }
+        .fa-aic{ top: 66%; right: 14%; background: #FF3D8B; color: #FFFFFF; --shadow: var(--yellow); animation-duration: 21s; animation-delay: -8s; }
+        .fa-tt { top: 34%; right: 9%;  background: #000000; color: #FFFFFF; --shadow: var(--pink);   animation-duration: 24s; animation-delay: -16s; }
+        .fa-fb { top: 82%; left: 6%;   background: #1877F2; color: #FFFFFF; --shadow: var(--cyan);   animation-duration: 28s; animation-delay: -2s; }
+
+        @keyframes floatDrift {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(22px, -32px) rotate(6deg);
+            }
+            50% {
+                transform: translate(-16px, -58px) rotate(-5deg);
+            }
+            75% {
+                transform: translate(28px, -26px) rotate(7deg);
+            }
+            100% {
+                transform: translate(-12px, 24px) rotate(-6deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .float-app { width: 38px; height: 38px; border-radius: 11px; border-width: 2.5px; }
+            .float-app svg { width: 22px; height: 22px; }
+            .float-app span.txt-icon { font-size: 1rem; }
+            .fa-obs, .fa-can, .fa-id { display: none; } /* Giữ màn hình di động thoáng gọn */
+        }
     </style>
     <script>
         // Tự dò ảnh ở nhiều chỗ/đuôi file phổ biến (cùng thư mục, img/, images/, assets/ ; .jpg .jpeg .png .webp, cả chữ HOA)
@@ -648,6 +734,62 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
+
+    <!-- Floating Background App Badges (Square Tiles) -->
+    <div class="floating-apps-container" aria-hidden="true">
+        <!-- 1. Premiere Pro -->
+        <div class="float-app fa-pr" title="Premiere Pro">
+            <span class="txt-icon" style="color:#9999FF;">Pr</span>
+        </div>
+        <!-- 2. Photoshop -->
+        <div class="float-app fa-ps" title="Photoshop">
+            <span class="txt-icon" style="color:#31A8FF;">Ps</span>
+        </div>
+        <!-- 3. Illustrator -->
+        <div class="float-app fa-ai" title="Illustrator">
+            <span class="txt-icon" style="color:#FF9A00;">Ai</span>
+        </div>
+        <!-- 4. InDesign -->
+        <div class="float-app fa-id" title="InDesign">
+            <span class="txt-icon" style="color:#FF3366;">Id</span>
+        </div>
+        <!-- 5. OBS Studio -->
+        <div class="float-app fa-obs" title="OBS Studio">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2a10 10 0 0 0-8.66 5l3.46 2A6 6 0 0 1 12 6V2zm-9.54 8.5a10 10 0 0 0 3.54 8.66l2-3.46A6 6 0 0 1 6 12H2.46zm13.08 6.5A6 6 0 0 1 12 18v4a10 10 0 0 0 8.66-5l-5.12-3z"/>
+            </svg>
+        </div>
+        <!-- 6. CapCut -->
+        <div class="float-app fa-cap" title="CapCut">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3v6l6 3-6 3v6"/>
+                <path d="M18 3v6l-6 3 6 3v6"/>
+            </svg>
+        </div>
+        <!-- 7. Canva -->
+        <div class="float-app fa-can" title="Canva">
+            <span class="txt-icon" style="font-family:serif; font-style:italic; font-size:1.5rem;">C</span>
+        </div>
+        <!-- 8. AI Coworker -->
+        <div class="float-app fa-aic" title="AI Coworker">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/>
+            </svg>
+        </div>
+        <!-- 9. TikTok -->
+        <div class="float-app fa-tt" title="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-2.89-2.89c.31 0 .61.05.89.14V9.43a6.34 6.34 0 0 0-.89-.06 6.34 6.34 0 1 0 6.34 6.34V9.07a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.5z"/>
+            </svg>
+        </div>
+        <!-- 10. Facebook -->
+        <div class="float-app fa-fb" title="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <header class="pt-20 pb-12 px-6 text-center relative z-10 overflow-hidden">
@@ -737,7 +879,7 @@
                     <span class="text-[#00C2D1]">#</span> GIỚI THIỆU
                 </h2>
                 <p class="text-[#14121F]/80 leading-relaxed font-medium">
-                    Sinh viên Truyền thông Đa phương tiện tại Hong Bang International University có hơn 2 năm kinh nghiệm thực tế trong Creative Production, Content, Media và triển khai dự án. Có kinh nghiệm làm việc trực tiếp với client, phát triển ý tưởng, điều phối production team và kiểm soát chất lượng từ brief đến sản phẩm cuối. Định hướng phát triển chuyên môn trong vai trò Creative Producer.
+                    Sinh viên ngành Truyền thông Đa phương tiện tại Trường Đại học Quốc tế Hồng Bàng (HIU), có hơn 2 năm kinh nghiệm tham gia các dự án về sản xuất nội dung, media và triển khai ý tưởng. Đã có cơ hội làm việc với khách hàng, phối hợp cùng team để lên ý tưởng, theo dõi tiến độ và hoàn thiện sản phẩm theo yêu cầu. Mong muốn tiếp tục phát triển kỹ năng quản lý sản xuất và định hướng trở thành Creative Producer.
                 </p>
             </section>
 
@@ -982,6 +1124,7 @@
                                 <li>Tham gia sản xuất truyền thông qua 2 mùa hoạt động.</li>
                                 <li>Trực tiếp setup camera, thiết bị và vận hành livestream bằng OBS.</li>
                                 <li>Tham gia quay/chụp và sản xuất nội dung phục vụ fanpage, TikTok và truyền thông tuyển sinh.</li>
+                                <li>Đại sứ HIU 2025.</li>
                             </ul>
                         </div>
                         <div class="md:w-36 flex-shrink-0 flex items-center justify-center z-10">
@@ -1178,14 +1321,59 @@
     </div>
 
     <div id="modal-3" class="modal-overlay" onclick="closeModal('modal-3', event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-content modal-lg" onclick="event.stopPropagation()">
             <div class="modal-head p-6 flex justify-between items-center">
                 <h4 class="font-black text-xl uppercase tracking-wider">📁 YOUBALANCE</h4>
                 <button onclick="closeModal('modal-3')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
-            <div class="p-10 text-center text-[#14121F]/70">
-                <div class="text-5xl mb-4 modal-icon">🗂️</div>
-                <p class="font-medium text-lg">Khu vực hiển thị sản phẩm: hình ảnh / báo cáo / video của dự án</p>
+            <div class="modal-body">
+                <p class="font-medium mb-5 text-[#14121F]/80">Tham gia xây dựng nội dung truyền thông, phát triển website và sản xuất visual/social content cho YouBalance — thương hiệu chăm sóc sức khỏe ứng dụng Ayurveda với tinh thần “Khỏe từ Gốc, Đẹp từ Tâm”.</p>
+                <div class="video-meta" style="margin:0 0 18px"><span class="tag bg-[#7B5CFF] text-white">Freelance</span><span class="tag bg-white">09/2025 - nay</span><span class="tag bg-[#E6E0FF]">Content Creator & Website</span></div>
+
+                <h5 class="stsd-sub">🎬 Reels / Video Social tiêu biểu</h5>
+                <div class="yb-reels">
+                    <a class="yb-reel" href="https://www.facebook.com/share/r/1Ej56ArZQC/?mibextid=wwXIfr" target="_blank" rel="noopener">
+                        <div class="yb-thumb">▶</div>
+                        <div>
+                            <div class="t">Ritual Healing từ căn bếp</div>
+                            <div class="d">Nguyên liệu tự nhiên · Chăm sóc bản thân · 0:34</div>
+                        </div>
+                    </a>
+                    <a class="yb-reel" href="https://www.facebook.com/share/r/1EBrkYU2QC/?mibextid=wwXIfr" target="_blank" rel="noopener">
+                        <div class="yb-thumb">▶</div>
+                        <div>
+                            <div class="t">Cuối tuần… da cần nghỉ ngơi</div>
+                            <div class="d">Massage dầu dưỡng Kakadu · Thư giãn · 0:22</div>
+                        </div>
+                    </a>
+                    <a class="yb-reel" href="https://www.facebook.com/share/v/1FYRCheeUj/?mibextid=wwXIfr" target="_blank" rel="noopener">
+                        <div class="yb-thumb">▶</div>
+                        <div>
+                            <div class="t">YouBalance là ai?</div>
+                            <div class="d">Brand intro · Hiểu mình - Thương mình · 0:33</div>
+                        </div>
+                    </a>
+                    <a class="yb-reel" href="https://www.facebook.com/share/r/1DFjbzpZNC/?mibextid=wwXIfr" target="_blank" rel="noopener">
+                        <div class="yb-thumb">▶</div>
+                        <div>
+                            <div class="t">Lối sống Cân bằng & Nuôi dưỡng</div>
+                            <div class="d">Năng lượng nguyên bản · Ayurveda nếp sống</div>
+                        </div>
+                    </a>
+                </div>
+
+                <h5 class="stsd-sub" style="margin-top:24px">🖼️ Hình post / Social Visual Facebook</h5>
+                <div class="yb-post-grid">
+                    <a class="yb-post" href="https://www.facebook.com/YouBalance.Ayurveda/photos" target="_blank" rel="noopener"><img src="yb-post-01.jpg" alt="Bài đăng YouBalance 01"></a>
+                    <a class="yb-post" href="https://www.facebook.com/YouBalance.Ayurveda/photos" target="_blank" rel="noopener"><img src="yb-post-02.jpg" alt="Bài đăng YouBalance 02"></a>
+                    <a class="yb-post" href="https://www.facebook.com/YouBalance.Ayurveda/photos" target="_blank" rel="noopener"><img src="yb-post-03.jpg" alt="Bài đăng YouBalance 03"></a>
+                    <a class="yb-post" href="https://www.facebook.com/YouBalance.Ayurveda/photos" target="_blank" rel="noopener"><img src="yb-post-04.jpg" alt="Bài đăng YouBalance 04"></a>
+                </div>
+
+                <div class="stsd-links" style="margin-top:18px">
+                    <a class="stsd-link" style="--c: var(--violet)" href="https://www.facebook.com/YouBalance.Ayurveda" target="_blank" rel="noopener"><span class="ico">📣</span><span><div class="t">Fanpage YouBalance</div><div class="d">9.6K followers · Social content & Reels</div></span><span class="go">↗</span></a>
+                    <a class="stsd-link" style="--c: var(--lime)" href="https://youbalance.com.au" target="_blank" rel="noopener"><span class="ico">🌿</span><span><div class="t">Website YouBalance</div><div class="d">Khóa học, sản phẩm và blog Ayurveda</div></span><span class="go">↗</span></a>
+                </div>
             </div>
         </div>
     </div>
@@ -1197,10 +1385,10 @@
                 <button onclick="closeModal('modal-4')" class="p-2 hover:rotate-90 transition-transform"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
             <div class="modal-body">
-                <p class="font-medium mb-5 text-[#14121F]/80">Video TikTok phục vụ truyền thông tuyển sinh trên kênh chính thức của Hồng Bàng International University, thuộc hoạt động của Trung tâm Tuyển sinh - Truyền thông HIU mà mình tham gia quay/chụp và sản xuất nội dung.</p>
+                <p class="font-medium mb-5 text-[#14121F]/80">Video TikTok & Reels phục vụ truyền thông tuyển sinh trên kênh chính thức của Hồng Bàng International University, thuộc hoạt động của Trung tâm Tuyển sinh - Truyền thông HIU mà mình tham gia quay/chụp, sản xuất nội dung và vai trò Đại sứ HIU 2025.</p>
                 <div class="video-meta" style="margin:0 0 18px"><span class="tag bg-white">2024 - nay</span><span class="tag bg-[#00C2D1] text-white">Media Collaborator</span><span class="tag bg-[#D4F7FA]">Livestream Production</span></div>
 
-                <h5 class="stsd-sub">🎬 Video TikTok tuyển sinh</h5>
+                <h5 class="stsd-sub">🎬 Reels tiêu biểu</h5>
                 <div class="hiu-wrap">
                     <div class="hiu-player">
                         <div class="video-frame" style="--c: var(--cyan)">
@@ -1217,6 +1405,22 @@
                             <span class="go">↗</span>
                         </a>
                     </div>
+                </div>
+
+                <h5 class="stsd-sub" style="margin-top:28px">📡 Hoạt động Livestream Production</h5>
+                <div class="so-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <button type="button" class="stsd-photo" style="aspect-ratio:1/1" onclick="showLightbox('hiu-live-01.jpg', 'hiu-live-01.jpg')">
+                        <img src="hiu-live-01.jpg" alt="Setup hệ thống Livestream OBS HIU" decoding="async">
+                    </button>
+                    <button type="button" class="stsd-photo" style="aspect-ratio:1/1" onclick="showLightbox('hiu-live-02.png', 'hiu-live-02.png')">
+                        <img src="hiu-live-02.png" alt="Giao diện vận hành Livestream Production" decoding="async">
+                    </button>
+                    <button type="button" class="stsd-photo" style="aspect-ratio:1/1" onclick="showLightbox('hiu-live-03.png', 'hiu-live-03.png')">
+                        <img src="hiu-live-03.png" alt="Vận hành kỹ thuật Livestream tuyển sinh" decoding="async">
+                    </button>
+                    <button type="button" class="stsd-photo" style="aspect-ratio:1/1" onclick="showLightbox('hiu-live-04.jpg', 'hiu-live-04.jpg')">
+                        <img src="hiu-live-04.jpg" alt="Không gian phòng Livestream HIU" decoding="async">
+                    </button>
                 </div>
             </div>
         </div>
