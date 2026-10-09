@@ -528,6 +528,9 @@
         .hiu-item small { display: block; font-weight: 600; opacity: .65; font-size: .72rem; }
         .hiu-item.active { background: var(--lime); }
         .hiu-item.active .n { background: var(--pink); }
+        .so-item.active { background: var(--orange) !important; color: #fff; }
+        .so-item.active .n { background: var(--ink) !important; color: #fff; }
+        .so-item.active small { color: #fff; opacity: .9; }
         @media (max-width: 640px) {
             .hiu-wrap { flex-direction: column; align-items: stretch; gap: 16px; }
             .hiu-player { flex: none; width: min(100%, 300px); margin: 0 auto; }
@@ -1128,8 +1131,29 @@
                     <div class="stsd-stat"><b>100%</b><span>Organic, không ads</span></div>
                 </div>
 
-                <h5 class="stsd-sub">🎵 Video TikTok tiêu biểu</h5>
-                <div class="tt-grid"><a class="tt-card" href="https://www.tiktok.com/@sohaisannuong/video/7628239745386188050" target="_blank" rel="noopener"><div class="tt-top"><span class="tt-tag">VIDEO 01</span></div><div class="tt-views"><b>59K</b><span>lượt xem</span></div><div class="tt-go">Xem trên TikTok ↗</div></a><a class="tt-card hot" href="https://www.tiktok.com/@sohaisannuong/video/7648642256102116615?is_from_webapp=1" target="_blank" rel="noopener"><div class="tt-top"><span class="tt-tag">VIDEO 02</span><span class=tt-hot>🔥 Cao nhất</span></div><div class="tt-views"><b>141K</b><span>lượt xem</span></div><div class="tt-go">Xem trên TikTok ↗</div></a><a class="tt-card" href="https://www.tiktok.com/@sohaisannuong/video/7620781085647064341" target="_blank" rel="noopener"><div class="tt-top"><span class="tt-tag">VIDEO 03</span></div><div class="tt-views"><b>67K</b><span>lượt xem</span></div><div class="tt-go">Xem trên TikTok ↗</div></a><a class="tt-card" href="https://www.tiktok.com/@sohaisannuong/video/7637770105601920264" target="_blank" rel="noopener"><div class="tt-top"><span class="tt-tag">VIDEO 04</span></div><div class="tt-views"><b>46K</b><span>lượt xem</span></div><div class="tt-go">Xem trên TikTok ↗</div></a></div>
+                <h5 class="stsd-sub">🎬 Video TikTok tiêu biểu</h5>
+                <div class="hiu-wrap">
+                    <div class="hiu-player">
+                        <div class="video-frame" style="--c: var(--orange)">
+                            <button type="button" class="facade" id="so-facade" data-embed="" data-title="Video TikTok Sò Hải Sản & Nướng">
+                                <span class="facade-play">▶</span><span class="facade-label">Bấm để phát video</span><span class="facade-spin"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hiu-side">
+                        <div class="hiu-list">
+                            <button type="button" class="hiu-item so-item active" onclick="soSelect(0, true)"><span class="n">01</span><span>Video 01 · 59K view<small>Bấm để phát</small></span></button>
+                            <button type="button" class="hiu-item so-item" onclick="soSelect(1, true)"><span class="n">02</span><span>Video 02 · 141K view 🔥<small>Bấm để phát</small></span></button>
+                            <button type="button" class="hiu-item so-item" onclick="soSelect(2, true)"><span class="n">03</span><span>Video 03 · 67K view<small>Bấm để phát</small></span></button>
+                            <button type="button" class="hiu-item so-item" onclick="soSelect(3, true)"><span class="n">04</span><span>Video 04 · 46K view<small>Bấm để phát</small></span></button>
+                        </div>
+                        <a class="stsd-link" id="so-open" style="--c: var(--orange)" href="https://www.tiktok.com/@sohaisannuong/video/7628239745386188050" target="_blank" rel="noopener">
+                            <span class="ico">🎵</span>
+                            <span><div class="t">Mở video này trên TikTok</div><div class="d">Nếu video không phát được ở đây</div></span>
+                            <span class="go">↗</span>
+                        </a>
+                    </div>
+                </div>
 
                 <div class="stsd-links" style="margin-top:16px">
                     <a class="stsd-link" style="--c: var(--cyan)" href="https://www.tiktok.com/@sohaisannuong" target="_blank" rel="noopener">
@@ -1246,7 +1270,7 @@
             l.rel = 'preconnect'; l.href = origin;
             document.head.appendChild(l);
         }
-        [['modal-mv', 'https://www.youtube-nocookie.com'], ['modal-talk', 'https://www.youtube-nocookie.com'], ['modal-mag', 'https://heyzine.com'], ['modal-4', 'https://www.tiktok.com']].forEach(([id, origin]) => {
+        [['modal-mv', 'https://www.youtube-nocookie.com'], ['modal-talk', 'https://www.youtube-nocookie.com'], ['modal-mag', 'https://heyzine.com'], ['modal-4', 'https://www.tiktok.com'], ['modal-2', 'https://www.tiktok.com']].forEach(([id, origin]) => {
             document.querySelectorAll(`[onclick*="openModal('${id}')"]`).forEach(btn => {
                 ['pointerenter', 'touchstart'].forEach(ev => btn.addEventListener(ev, () => warm(origin), { passive: true, once: true }));
             });
@@ -1293,7 +1317,7 @@
         const HIU_VIDEOS = ["7641545188552264968", "7675628785970023698", "7675286358402927892", "7631530998269971720"];
         function hiuSelect(i, play) {
             const f = document.getElementById('hiu-facade');
-            document.querySelectorAll('.hiu-item').forEach((b, k) => b.classList.toggle('active', k === i));
+            document.querySelectorAll('.hiu-item:not(.so-item)').forEach((b, k) => b.classList.toggle('active', k === i));
             f.parentElement.querySelectorAll('iframe').forEach(x => x.remove());
             f.classList.remove('loading', 'done');
             f.dataset.embed = `https://www.tiktok.com/player/v1/${HIU_VIDEOS[i]}?autoplay=1&rel=0&music_info=0&description=0`;
@@ -1302,6 +1326,19 @@
             if (play) f.click();
         }
         hiuSelect(0, false);
+
+        const SO_VIDEOS = ["7628239745386188050", "7648642256102116615", "7620781085647064341", "7637770105601920264"];
+        function soSelect(i, play) {
+            const f = document.getElementById('so-facade');
+            document.querySelectorAll('.so-item').forEach((b, k) => b.classList.toggle('active', k === i));
+            f.parentElement.querySelectorAll('iframe').forEach(x => x.remove());
+            f.classList.remove('loading', 'done');
+            f.dataset.embed = `https://www.tiktok.com/player/v1/${SO_VIDEOS[i]}?autoplay=1&rel=0&music_info=0&description=0`;
+            f.dataset.title = `Video TikTok Sò Hải Sản ${i + 1}`;
+            document.getElementById('so-open').href = `https://www.tiktok.com/@sohaisannuong/video/${SO_VIDEOS[i]}`;
+            if (play) f.click();
+        }
+        soSelect(0, false);
         let soBuilt = false;
         function buildSo() {
             if (soBuilt) return; soBuilt = true;
